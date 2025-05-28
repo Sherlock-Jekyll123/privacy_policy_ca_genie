@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Delete Account - CA Genie</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .container {
+      max-width: 500px;
+      background: white;
+      margin: 40px auto;
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 25px;
+    }
+    label {
+      display: block;
+      margin: 15px 0 8px;
+      font-weight: bold;
+      color: #444;
+    }
+    select, input[type="email"] {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+    select:focus, input[type="email"]:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+    button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 12px;
+      font-size: 1.1em;
+      background-color: #e74c3c;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #c0392b;
+    }
+    .message {
+      margin-top: 20px;
+      padding: 15px;
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+      border-radius: 5px;
+      display: none;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Delete Your Account</h1>
+
+    <form id="deleteAccountForm">
+      <label for="reason">Why are you choosing to delete the account?</label>
+      <select id="reason" name="reason" required>
+        <option value="" disabled selected>Select a reason</option>
+        <option value="privacy_concerns">Privacy concerns</option>
+        <option value="not_useful">Not useful</option>
+        <option value="creating_new_account">Creating a new account</option>
+        <option value="technical_issues">Technical issues</option>
+        <option value="other">Other</option>
+      </select>
+
+      <label for="email">Provide the email linked to the account you want to delete</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" required />
+
+      <button type="submit">Delete Account</button>
+    </form>
+
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('deleteAccountForm');
+    const messageBox = document.getElementById('message');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const reason = form.reason.value;
+      const email = form.email.value.trim();
+
+      if (!reason) {
+        alert('Please select a reason for deleting your account.');
+        return;
+      }
+      if (!email) {
+        alert('Please enter your email address.');
+        return;
+      }
+
+      // Store responses in localStorage (example)
+      const storedData = JSON.parse(localStorage.getItem('deleteAccountRequests') || '[]');
+      storedData.push({ reason, email, date: new Date().toISOString() });
+      localStorage.setItem('deleteAccountRequests', JSON.stringify(storedData));
+
+      // Show confirmation message
+      messageBox.textContent = `Thank you. Your request to delete the account associated with ${email} has been received.`;
+      messageBox.style.display = 'block';
+
+      // Reset form
+      form.reset();
+    });
+  </script>
+
+</body>
+</html>
